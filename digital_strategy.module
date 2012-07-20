@@ -1,0 +1,35 @@
+<?php
+function digital_strategy_menu() {
+	$items = array();
+		
+	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
+		$items['digital-strategy/' . $type] = array(
+			'access arguments' => array('access content'),
+			'page callback'    => 'digital_strategy_themeless',
+			'page arguments'   => array($type),
+			'title'            => $type,
+			'type'             => MENU_CALLBACK,
+		);
+		
+	} // end foreach
+	
+	return $items;
+}
+
+function digital_strategy_themeless ($type = '') {
+	// get the node based on the path
+	// we know the path because we created it
+	$alias = "digital-strategy/progress-" . $type;
+	$path = drupal_lookup_path("source", $alias);
+	$node = menu_get_object("node", 1, $path);
+	
+	// set correct content type header
+	$content_type = 'application/json';
+	if ($type == 'xml') {
+		$content_type = 'text/xml';
+	}
+	drupal_set_header("Content-Type: " . $content_type . "; charset=utf-8");
+
+	// output the body only, no theme
+	echo $node->body;
+}
