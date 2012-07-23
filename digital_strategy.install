@@ -1,50 +1,62 @@
 <?php
+
+/**
+ * @file
+ * Install file for Digital Strategy module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
 function digital_strategy_install() {
-	variable_set('digital_strategy_types', array("xml", "json", "jsonp"));
-	digital_strategy_create_nodes();
+  variable_set('digital_strategy_types', array("xml", "json", "jsonp"));
+  digital_strategy_create_nodes();
 }
 
+// On module enable create nodes and set digital strategy type variables
 function digital_strategy_enable() {
-	variable_set('digital_strategy_types', array("xml", "json", "jsonp"));
-	digital_strategy_create_nodes();
+  variable_set('digital_strategy_types', array("xml", "json", "jsonp"));
+  digital_strategy_create_nodes();
 }
 
+// On module disable delete nodes and digital strategy type variables
 function digital_strategy_disable() {
-	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
-		$alias = "digital-strategy/progress-" . $type;
-		$path = drupal_lookup_path("source", $alias);
-		$node = menu_get_object("node", 1, $path);
-		
-		if ($node) {
-			node_delete($node->nid);
-		} else {
-			drupal_set_message(t('@alias not deleted, it did not exist.', array('@alias' => $alias)), 'warning');
-		}
-	}
-	
-	variable_del('strategy_types');
+  foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
+    $alias = "digital-strategy/progress-" . $type;
+    $path = drupal_lookup_path("source", $alias);
+    $node = menu_get_object("node", 1, $path);
+
+    if ($node) {
+      node_delete($node->nid);
+    } 
+    else {
+      drupal_set_message(t('@alias not deleted, it did not exist.', array('@alias' => $alias)), 'warning');
+    }
+  }
+  variable_del('strategy_types');
 }
 
+// Creates the nodes for the digital strategy type variables
 function digital_strategy_create_nodes() {
-	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
-		$node = new stdClass();
-	
-		$node->name    = "Digital Strategy Progess - " . $type;
-		$node->title   = $node->name;
-		$node->body    = "";
-		$node->type    = "page";
-		$node->created = time();
-		$node->changed = $node->created;
-		$node->status  = 0;
-		$node->promote = 0;
-		$node->sticky  = 0;
-		$node->format  = 2;
-		$node->uid     = 1;
-		
-		$node->path    = "digital-strategy/progress-" . $type;
-		
-		if ($node = node_submit($node)) {
-			node_save($node);
-		}
-	} // end foreach
+  foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
+
+    $node = new stdClass();
+    $node->name = "Digital Strategy Progess - " . $type;
+    $node->title = $node->name;
+    $node->body = "";
+    $node->type = "page";
+    $node->created = time();
+    $node->changed = $node->created;
+    $node->status = 0;
+    $node->promote = 0;
+    $node->sticky = 0;
+    $node->format = 2;
+    $node->apachesolr_exclude = 1;
+    $node->pathauto_perform_alias = 0;
+    $node->path = "digital-strategy/progress-" . $type;
+
+    if ($node = node_submit($node)) {
+      node_save($node);
+    }
+  } // end foreach
 }
