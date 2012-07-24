@@ -13,7 +13,7 @@ function digital_strategy_menu() {
 
   // Loops through the digital strategy type variables to create menu callbacks for each type	
   foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
-    $items['digital-strategy/' . $type] = array(
+    $items['digitalstrategy.' . $type] = array(
     'access arguments' => array('access content'),
     'page callback' => '_digital_strategy_themeless',
     'page arguments' => array($type),
@@ -28,7 +28,7 @@ function digital_strategy_menu() {
 function _digital_strategy_themeless($type = '') {
   // get the node based on the path
   // we know the path because we created it
-  $alias = "digital-strategy/progress-" . $type;
+  $alias = "digita-strategy/" . $type;
   $path = drupal_lookup_path("source", $alias);
   $node = menu_get_object("node", 1, $path);
   

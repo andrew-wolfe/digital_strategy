@@ -22,7 +22,7 @@ function digital_strategy_enable() {
 // On module disable delete nodes and digital strategy type variables
 function digital_strategy_disable() {
   foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
-    $alias = "digital-strategy/progress-" . $type;
+    $alias = "digitalstrategy/" . $type;
     $path = drupal_lookup_path("source", $alias);
     $node = menu_get_object("node", 1, $path);
 
@@ -43,7 +43,7 @@ function digital_strategy_create_nodes() {
     $node = new stdClass();
     $node->name = "Digital Strategy Progess - " . $type;
     $node->title = $node->name;
-    $node->body = "";
+    $node->body = $type . "test";
     $node->type = "page";
     $node->created = time();
     $node->changed = $node->created;
@@ -53,7 +53,7 @@ function digital_strategy_create_nodes() {
     $node->format = 2;
     $node->apachesolr_exclude = 1;
     $node->pathauto_perform_alias = 0;
-    $node->path = "digital-strategy/progress-" . $type;
+    $node->path = "digitalstrategy/" . $type;
 
     if ($node = node_submit($node)) {
       node_save($node);
