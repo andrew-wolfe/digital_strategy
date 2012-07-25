@@ -39,11 +39,10 @@ function digital_strategy_disable() {
 // Creates the nodes for the digital strategy type variables
 function digital_strategy_create_nodes() {
   foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
-
     $node = new stdClass();
     $node->name = "Digital Strategy Progess - " . $type;
     $node->title = $node->name;
-    $node->body = $type . "test";
+    $node->body = "";
     $node->type = "page";
     $node->created = time();
     $node->changed = $node->created;
