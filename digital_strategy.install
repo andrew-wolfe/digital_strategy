@@ -9,20 +9,24 @@
  * Implementation of hook_install().
  */
 function digital_strategy_install() {
-  variable_set('digital_strategy_types', array("xml", "json", "jsonp"));
+  variable_set('digital_strategy_types', array("xml", "json", "jsonp", "html"));
   digital_strategy_create_nodes();
 }
 
 // On module enable create nodes and set digital strategy type variables
 function digital_strategy_enable() {
-  variable_set('digital_strategy_types', array("xml", "json", "jsonp"));
+  variable_set('digital_strategy_types', array("xml", "json", "jsonp", "html"));
   digital_strategy_create_nodes();
 }
 
 // On module disable delete nodes and digital strategy type variables
 function digital_strategy_disable() {
-  foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
+  foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp", "html")) as $type) {
     $alias = "digitalstrategy/" . $type;
+		// to delete the html page alias will be digitalstrategy/report
+		if ($type == 'html') {
+			$alias = "digitalstrategy/report";
+		}
     $path = drupal_lookup_path("source", $alias);
     $node = menu_get_object("node", 1, $path);
 
@@ -33,12 +37,13 @@ function digital_strategy_disable() {
       drupal_set_message(t('@alias not deleted, it did not exist.', array('@alias' => $alias)), 'warning');
     }
   }
-  variable_del('strategy_types');
+	
+  variable_del('digital_strategy_types');
 }
 
 // Creates the nodes for the digital strategy type variables
 function digital_strategy_create_nodes() {
-  foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
+  foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp", "html")) as $type) {
     $node = new stdClass();
     $node->name = "Digital Strategy Progess - " . $type;
     $node->title = $node->name;
@@ -52,7 +57,11 @@ function digital_strategy_create_nodes() {
     $node->format = 2;
     $node->apachesolr_exclude = 1;
     $node->pathauto_perform_alias = 0;
-    $node->path = "digitalstrategy/" . $type;
+		$node->path = "digitalstrategy/" . $type;
+		// change the path for the html version
+		if ($type == 'html') {
+			$node->path = "digitalstrategy/report";
+		}
 
     if ($node = node_submit($node)) {
       node_save($node);

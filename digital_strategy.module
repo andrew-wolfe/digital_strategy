@@ -12,15 +12,19 @@ function digital_strategy_menu() {
   $items = array();
 
   // Loops through the digital strategy type variables to create menu callbacks for each type	
-	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
-		$items['digitalstrategy.' . $type] = array(
-			'access arguments' => array('access content'),
-			'page callback' => '_digital_strategy_themeless',
-			'page arguments' => array($type),
-			'title' => $type,
-			'type' => MENU_CALLBACK, 
-		);	
+	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp", "html")) as $type) {
+		// create callback menu item for everything except html
+		if ($type != 'html') {
+			$items['digitalstrategy.' . $type] = array(
+				'access arguments' => array('access content'),
+				'page callback' => '_digital_strategy_themeless',
+				'page arguments' => array($type),
+				'title' => $type,
+				'type' => MENU_CALLBACK, 
+			);
+		}
 	} // end foreach
+	
 	return $items;
 }
 
