@@ -11,8 +11,8 @@
 function digital_strategy_menu() {
   $items = array();
 
-  // Loops through the digital strategy type variables to create menu callbacks for each type	
-	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp", "html")) as $type) {
+    // Loops through the digital strategy type variables to create menu callbacks for each type	
+	foreach (variable_get('digital_strategy_types', array("xml", "json", "jsonp")) as $type) {
 		// create callback menu item for everything except html
 		if ($type != 'html') {
 			$items['digitalstrategy.' . $type] = array(
@@ -24,7 +24,6 @@ function digital_strategy_menu() {
 			);
 		}
 	} // end foreach
-	
 	return $items;
 }
 

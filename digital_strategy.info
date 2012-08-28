@@ -1,6 +1,6 @@
 
 name = Digital Strategy
-description = Creates 3 page nodes for digital strategy progess on enable. Also creates menu callbacks which load the page nodes and output just the body with the appropriate content type headers.
+description = Creates page nodes for each of the digital strategy progress types on enable. Also creates menu callbacks which load the page nodes and output just the body with the appropriate content type headers for specific strategy types.
 core = 6.x
 package = Digital Strategy
 dependencies[] = path
