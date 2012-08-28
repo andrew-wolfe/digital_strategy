@@ -1,12 +1,12 @@
 Digital Strategy Drupal Module
 ===========================================
 
-Creates 3 page nodes for digital strategy progess on enable. Also creates menu callbacks which load the page nodes and output just the body with the appropriate content type headers.
+Creates page nodes for each of the digital strategy progress types on enable. Also creates menu callbacks which load the page nodes and output just the body with the appropriate content type headers for specific strategy types.
 
 Goals
 ----------
 
-In order to generate a Gov't wide report to show all agencies progress toward meeting the Gov't Digital Strategy each agency is required to provide easy access to their report in 3 machine-readble formats (xml, json, and jsonp).
+In order to generate a Gov't wide report to show all agencies progress toward meeting the Gov't Digital Strategy each agency is required to provide easy access to their report in 3 machine-readble formats (xml, json, and jsonp) and an user-friendly html version.
 
 Requirements
 ------------
@@ -22,9 +22,9 @@ Place the module in the /sites/all/modules directory of your Drupal installation
 How it Works
 ------------
 
-When the module is enabled (.install file) 3 page nodes are created: digital-strategy/progress-xml, digital-strategy/progress-json, digital-strategy/progress-jsonp. Menu callback items are created, digital-strategy/xml, digital-strategy/json, and digital-strategy/jsonp in the .module file.
-
-These urls provide the progress reports without the theme and with the correct content type headers.
+When the module is enabled (.install file) page nodes are created for each content type:   Digital Strategy Progess - {content type}. Menu callback items are created for the machine-readable types in the .module file, but not for the html version. The html version will be presented only as html.
+Machine readable URLs will be .gov/digitalstrategy.{content type}. The machine readable urls provide the progress reports without the theme and with the correct content type headers.
+The html version will be found at .gov/digitalstrategy/report.
 
 Contributing
 ------------
